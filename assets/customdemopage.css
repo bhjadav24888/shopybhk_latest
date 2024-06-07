@@ -1,0 +1,13 @@
+.cust_text_bold {
+  font-weight:bold;
+}
+
+.cust_text_fontsize{
+  font-size:25px;
+  color:skyblue;
+}
+
+.cust_text_fontsize_max {
+  font-size:30px;
+  color:darkblue;
+}

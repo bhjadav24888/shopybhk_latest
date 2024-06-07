@@ -1,0 +1,44 @@
+{% layout 'theme' %}
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+{{ 'customdemopage.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'customdemopage.js' | asset_url }}" defer="defer"></script>
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="page-width page-width--narrow section-{{ section.id }}-padding">
+  <h1 class="main-page-title testpage-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {{ page.title | escape }} </h1>
+    <p class="cust_text_fontsize_max">{{ page.metafields.custom.cust_page_sub_title }}</p>
+    <span class="cust_text_bold cust_text_fontsize">{{ page.metafields.custom.short_text }}</span>
+  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {{ page.content }}
+  </div>
+   <div id="cust_textarea" class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {{ page.metafields.custom.textarea }}
+  </div>
+  
+  {% form 'contact' %}
+     <p><label>Adrress</label>
+     <input type="text" name="addrres" value=""></p>
+     <p><label>City</label>
+     <input type="text" name="city" value=""></p>
+    <p><label>State</label>
+     <input type="text" name="state" value=""></p>
+    <p><label>Note</label>
+     <textarea id="note" name="note" rows="4" cols="50"></textarea></p>
+    <input type="submit" value="submit">
+  {% endform %}
+  
+</div>
+
