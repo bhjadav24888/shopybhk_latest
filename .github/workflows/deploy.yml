@@ -8,7 +8,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@main
       - name: Deploy theme
-        uses: bravetheskies/shopify-rapid-deploy-action@main
+        uses: actions/checkout@v2
         env:
           SHOPIFY_APP_API_PASSWORD: ${{ secrets.SHOPIFY_APP_API_PASSWORD }}
           SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
