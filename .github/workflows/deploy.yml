@@ -16,6 +16,7 @@ jobs:
       - name: Install Theme Kit
         run: |
           curl -s https://shopify.dev/themekit-bash | sudo bash
+          theme version  # Check the installed version of Theme Kit
 
       - name: Deploy to Shopify
         env:
@@ -23,4 +24,5 @@ jobs:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE_URL }}
           THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
         run: |
+          echo "Deploying theme to Shopify"
           theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$THEME_ID --dir=.
