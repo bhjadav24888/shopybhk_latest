@@ -1,23 +1,17 @@
-name: Deploy Shopify Theme
-on:
-  push:
-    branches:
-      - main  # or the branch you want to deploy from
+name: Deploy theme
+on: [push]
 jobs:
-  deploy:
+  build:
+    name: Deploy theme
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install Theme Kit
-        run: |
-          curl -s https://shopify.dev/themekit-bash | sudo bash
-          theme version  # Check the installed version of Theme Kit
-      - name: Deploy to Shopify
+        uses: actions/checkout@main
+      - name: Deploy theme
+        uses: bravetheskies/shopify-rapid-deploy-action@main
         env:
-          SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_API_PASSWORD }}
-          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE_URL }}
-          THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
-        run: |
-          echo "Deploying theme to Shopify"
-          theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$THEME_ID --dir=.
+          SHOPIFY_APP_API_PASSWORD: ${{ secrets.SHOPIFY_APP_API_PASSWORD }}
+          SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
+          SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
+          THEME_PATH: ${{ secrets.SHOPIFY_THEME_PATH }}
+          THEMEKIT_FLAGS: --ignored-file=config/settings_data.json --ignored-file=locales/*
