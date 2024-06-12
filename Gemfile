@@ -2,5 +2,5 @@
 
 source 'https://rubygems.org'
 
-# Add any other necessary gems here
+gem 'shopify_theme', '~> 0.2.13'
 gem 'shopify-cli', '~> 2.0'
