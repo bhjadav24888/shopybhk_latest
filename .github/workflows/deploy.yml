@@ -34,13 +34,14 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest @shopify/theme
 
-      - name: Authenticate Shopify CLI logout
-        run: shopify logout
-
-      - name: Authenticate Shopify CLI login  
-        run: shopify login --store https://shopybhk.myshopify.com/admin
+      - name: Authenticate Shopify CLI
         env:
-            SHOPIFY_CLI_AUTH_TOKEN: ${{ secrets.SHOPIFY_CLI_AUTH_TOKEN }}
+          SHOPIFY_AUTH_TOKEN: ${{ secrets.SHOPIFY_AUTH_TOKEN }}
+        run: |
+          SHOPIFY_CLI_TOKEN=$SHOPIFY_AUTH_TOKEN" > ~/.shopify-cli-env
 
       - name: Deploy to Shopify
-        run: shopify theme push --allow-live
+        env:
+          SHOPIFY_AUTH_TOKEN: ${{ secrets.SHOPIFY_AUTH_TOKEN }}
+        run: |
+          shopify theme push --env=production
