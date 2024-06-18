@@ -37,9 +37,6 @@ jobs:
       - name: Authenticate Shopify CLI logout
         run: shopify logout
       
-      - name: Authenticate Shopify CLI serve
-        run:  shopify serve
-      
       - name: Authenticate Shopify CLI logout  
         run: shopify login --store https://shopybhk.myshopify.com
         env:
