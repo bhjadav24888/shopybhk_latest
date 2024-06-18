@@ -44,4 +44,4 @@ jobs:
         env:
           SHOPIFY_AUTH_TOKEN: ${{ secrets.SHOPIFY_AUTH_TOKEN }}
         run: |
-          shopify login --store https://shopybhk.myshopify.com
+          shopify dev theme --store https://shopybhk.myshopify.com
