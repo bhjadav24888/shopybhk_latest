@@ -32,7 +32,7 @@ jobs:
         working-directory: ./  # Change this if your Gemfile is not in the root directory
 
       - name: Install Shopify CLI
-        run: npm install -g @shopify/cli@latest @shopify/theme
+        run: npm install -g @shopify/cli@2 @shopify/theme
 
       - name: Authenticate Shopify CLI
         env:
