@@ -38,7 +38,7 @@ jobs:
         env:
           SHOPIFY_AUTH_TOKEN: ${{ secrets.SHOPIFY_AUTH_TOKEN }}
         run: |
-          SHOPIFY_CLI_TOKEN = $SHOPIFY_AUTH_TOKEN
+         echo "SHOPIFY_CLI_TOKEN=$SHOPIFY_AUTH_TOKEN" > ~/.shopify-cli-env shopify whoami
 
       - name: Deploy to Shopify
         env:
