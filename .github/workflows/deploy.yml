@@ -1,47 +1,34 @@
-name: Deploy Shopify Theme
+name: Shopify CI/CD
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on pushes to main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to main branch
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
+    - name: Install Shopify CLI
+      run: |
+        curl -s https://shopify.github.io/themekit/scripts/install.py | python
+        shopify version  # Verify installation
 
-      - name: Install Ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '3.1'  # Specify the Ruby version
+    - name: Build and Deploy
+      env:
+        SHOPIFY_API_PASSWORD: ${{ secrets.SHOPIFY_API_PASSWORD }}
+        SHOPIFY_STORE_URL: https://shopybhk.myshopify.com
+      run: |
+        shopify login -p $SHOPIFY_API_PASSWORD -s $SHOPIFY_STORE_URL
+        shopify deploy --nodelete
 
-      - name: Install Bundler
-        run: gem install bundler
-
-      - name: Install Ruby Dependencies
-        run: bundle install
-        working-directory: ./  # Change this if your Gemfile is not in the root directory
-
-      - name: Install Shopify CLI
-        run: npm install -g @shopify/cli@2 @shopify/theme
-
-      - name: Authenticate Shopify CLI
-        env:
-          SHOPIFY_AUTH_TOKEN: ${{ secrets.SHOPIFY_AUTH_TOKEN }}
-        run: |
-         echo "SHOPIFY_CLI_TOKEN=$SHOPIFY_AUTH_TOKEN" > ~/.shopify-cli-env shopify whoami
-
-      - name: Deploy to Shopify
-        env:
-          SHOPIFY_AUTH_TOKEN: ${{ secrets.SHOPIFY_AUTH_TOKEN }}
-        run: |
-          shopify login --store https://shopybhk.myshopify.com
+    - name: Run Tests (Optional)
+      run: |
+        # Add commands to run tests if applicable
