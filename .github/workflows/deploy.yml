@@ -3,27 +3,34 @@ name: Deploy Shopify Theme
 on:
   push:
     branches:
-      - main
+      - main  # or the branch you want to deploy from
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Install Theme Kit
-      run: |
-        curl -s https://shopify.github.io/themekit/scripts/install | sudo bash || true
-        wget https://github.com/Shopify/themekit/releases/latest/download/theme_linux_amd64 -O theme
-        chmod +x theme
-        sudo mv theme /usr/local/bin/theme
+      - name: Install Theme Kit
+        run: |
+          echo "Installing Theme Kit..."
+          curl -s https://shopify.dev/themekit-bash | sudo bash
+          echo "Installed Theme Kit version:"
+          theme version  # Check the installed version of Theme Kit
 
-    - name: Deploy to Shopify
-      env:
-        SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_PASSWORD }}
-        SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
-        SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
-      run: |
-        theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$SHOPIFY_THEME_ID
+      - name: Print Environment Variables
+        run: |
+          echo "Shopify Store URL: $SHOPIFY_STORE"
+          echo "Shopify Theme ID: $THEME_ID"
+
+      - name: Deploy to Shopify
+        env:
+          SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_API_PASSWORD }}
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE_URL }}
+          THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
+        run: |
+          echo "Deploying theme to Shopify store: $SHOPIFY_STORE"
+          theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$THEME_ID --dir=.
+          echo "Deployment completed"
