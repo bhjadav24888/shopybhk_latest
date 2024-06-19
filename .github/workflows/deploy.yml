@@ -24,9 +24,5 @@ jobs:
         SHOPIFY_API_PASSWORD: ${{ secrets.SHOPIFY_API_PASSWORD }}
         SHOPIFY_STORE_URL: https://shopybhk.myshopify.com
       run: |
-        shopify login -p $SHOPIFY_API_PASSWORD -s $SHOPIFY_STORE_URL
-        shopify deploy --nodelete
-
-    - name: Run Tests (Optional)
-      run: |
-        # Add commands to run tests if applicable
+        shopify login--store https://shopybhk.myshopify.com
+        
