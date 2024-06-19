@@ -35,17 +35,8 @@ jobs:
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest @shopify/theme
 
-      - name: Deploy to Shopify (with retry)
-        run: |
-          retries=3
-          until shopify deploy --nodelete || [ $retries -eq 0 ]; do
-            retries=$((retries - 1))
-            sleep 10
-          done
-
       - name: Authenticate and Deploy Theme
         env:
-          CI: 1
           SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
           SHOPIFY_ADMIN_API_PASSWORD: ${{ secrets.SHOPIFY_ADMIN_API_PASSWORD }}
           SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
