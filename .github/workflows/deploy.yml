@@ -14,7 +14,8 @@ jobs:
 
       - name: Install Theme Kit
         run: npm install @shopify/themekit
-
+             theme version
+             
       - name: Print Environment Variables
         run: |
           echo "Shopify Store URL: $SHOPIFY_STORE"
@@ -27,5 +28,5 @@ jobs:
           THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
         run: |
           echo "Deploying theme to Shopify store: $SHOPIFY_STORE"
-          theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$THEME_ID --dir=.
+          shopify theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$THEME_ID --dir=.
           echo "Deployment completed"
