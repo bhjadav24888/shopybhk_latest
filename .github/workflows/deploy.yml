@@ -18,10 +18,11 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install Theme Kit
+      - name: Install Theme Kit Manually
         run: |
-          curl -s https://shopify.github.io/themekit/scripts/install | sudo bash
-
+          wget https://shopify.github.io/themekit/scripts/install.sh
+          sudo bash install.sh
+        
       - name: Deploy to Shopify
         env:
           SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_PASSWORD }}
