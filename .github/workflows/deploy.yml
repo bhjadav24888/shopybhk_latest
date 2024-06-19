@@ -17,10 +17,8 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install Shopify CLI
-      run: |
-        curl -s https://shopify.github.io/themekit/scripts/install.py | python
-        shopify version  # Verify installation
-
+      run: npm install -g @shopify/cli@latest @shopify/theme
+        
     - name: Build and Deploy
       env:
         SHOPIFY_API_PASSWORD: ${{ secrets.SHOPIFY_API_PASSWORD }}
