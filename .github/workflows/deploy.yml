@@ -8,40 +8,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions: write-all
-    timeout-minutes: 30
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
+          node-version: '14'
 
-      - name: Install Ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '3.1'  # Specify the Ruby version
+      - name: Install Theme Kit
+        run: |
+          curl -s https://shopify.github.io/themekit/scripts/install | sudo bash
 
-      - name: Install Bundler
-        run: gem install bundler
-
-      - name: Install Ruby Dependencies
-        run: bundle install
-        working-directory: ./  # Change this if your Gemfile is not in the root directory
-
-      - name: Install Shopify CLI
-        run: npm install -g @shopify/cli@latest @shopify/theme
-
-      - name: Authenticate and Deploy Theme
+      - name: Deploy to Shopify
         env:
-          SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
-          SHOPIFY_ADMIN_API_PASSWORD: ${{ secrets.SHOPIFY_ADMIN_API_PASSWORD }}
+          SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_PASSWORD }}
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
         run: |
-          # Deploy the theme
-          shopify theme dev
-      - name: shopoify theme push
-        run: shopify theme push
+          theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$SHOPIFY_THEME_ID
