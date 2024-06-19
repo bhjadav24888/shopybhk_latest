@@ -3,8 +3,7 @@ name: Deploy Shopify Theme
 on:
   push:
     branches:
-      - main  # or the branch you want to deploy from
-
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,7 +17,7 @@ jobs:
           echo "Installing Theme Kit..."
           curl -s https://shopify.dev/themekit-bash | sudo bash
           echo "Installed Theme Kit version:"
-          theme version  # Check the installed version of Theme Kit
+          theme version
 
       - name: Print Environment Variables
         run: |
