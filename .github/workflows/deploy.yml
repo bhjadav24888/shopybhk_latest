@@ -28,5 +28,5 @@ jobs:
           THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
         run: |
           echo "Deploying theme to Shopify store: $SHOPIFY_STORE"
-          shopify theme deploy --password=$SHOPIFY_PASSWORD --store=$SHOPIFY_STORE --themeid=$THEME_ID --dir=.
+          shopify login --store $SHOPIFY_STORE
           echo "Deployment completed"
