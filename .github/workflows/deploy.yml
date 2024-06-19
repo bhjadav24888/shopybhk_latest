@@ -13,11 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Theme Kit
-        run: |
-          echo "Installing Theme Kit..."
-          curl -s https://shopify.dev/themekit-bash | sudo bash
-          echo "Installed Theme Kit version:"
-          theme version
+        run: npm install @shopify/themekit
 
       - name: Print Environment Variables
         run: |
