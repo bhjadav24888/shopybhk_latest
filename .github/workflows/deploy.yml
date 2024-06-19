@@ -43,3 +43,5 @@ jobs:
         run: |
           # Deploy the theme
           shopify theme dev
+      - name: shopoify theme push
+        run: shopify theme push
