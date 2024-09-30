@@ -17,26 +17,26 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '20'
       - name: Install Dependencies
         run: npm install
       - name: Run Unit Tests
-        run: npm run test -- --ci --coverage  # Assuming Jest is configured in your package.json
-    
+        run: npm run test -- --ci --coverage  # Jest should be configured in package.json
+
   e2e_tests:
     name: Run End-to-End Tests (Cypress)
     runs-on: ubuntu-latest
-    steps:	
+    steps:
       - uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '20'
       - name: Install Dependencies
         run: npm install
       - name: Run Cypress E2E Tests
-        run: npx cypress run --browser chrome
-    
+        run: npx cypress run --config-file cypress.json --browser chrome
+
   api_tests:
     name: Run API Tests (Postman/Newman)
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
         run: npm install -g newman
       - name: Run Postman API Tests
         run: newman run tests/postman-collection.json --environment tests/postman-environment.json
-    
+
   theme_check:
     name: Run Shopify Theme Check (Liquid Linting)
     runs-on: ubuntu-latest
@@ -58,8 +58,10 @@ jobs:
           ruby-version: '3.1'
       - name: Install Theme Check
         run: gem install theme-check
+      - name: Pull Shopify Theme
+        run: shopify theme pull --store=https://shopybhk.myshopify.com
       - name: Run Shopify Theme Check
-        run: theme-check https://shopybhk.myshopify.com
+        run: theme-check ./
 
   performance_test:
     name: Run Performance Tests (Google Lighthouse)
@@ -73,8 +75,22 @@ jobs:
       - name: Install Lighthouse CI
         run: npm install -g @lhci/cli
       - name: Run Lighthouse Performance Test
-        run: lhci autorun --url= https://shopybhk.myshopify.com/
+        run: lhci autorun --url=https://shopybhk.myshopify.com/ --collect.staticDistDir=./public
 
+  shopify_automa:
+    name: Shopify Automa Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Install Shopify Automa
+        run: npm install shopify-themekit # Example tool for Shopify automation
+      - name: Run Automa Tests
+        run: npm run automa:test  # Custom script for automating Shopify tests (e.g., customer flows, product purchase)
+    
   deploy:
     name: Deploy to Production (Optional)
     runs-on: ubuntu-latest
