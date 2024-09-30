@@ -1,0 +1,5 @@
+{
+  "baseUrl": "https://shopybhk.myshopify.com/",
+  "integrationFolder": "cypress/integration",
+  "video": false
+}
