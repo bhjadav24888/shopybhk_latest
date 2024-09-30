@@ -86,8 +86,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Install Shopify Automa
-        run: npm install shopify-themekit # Example tool for Shopify automation
+      - name: Install Shopify Theme Kit
+        run:  curl -s https://shopify.dev/themekit.py | python # Example tool for Shopify automation
       - name: Run Automa Tests
         run: npm run automa:test  # Custom script for automating Shopify tests (e.g., customer flows, product purchase)
     
