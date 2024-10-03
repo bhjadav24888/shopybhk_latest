@@ -45,14 +45,14 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
       - name: Run Postman API Tests
-        run: newman run tests/postman-collection.json --environment tests/postman-environment.json
+        run: newman run tests/postman-collection.json --environment tests/postman-collection.json
 
   theme_check:
     name: Run Shopify Theme Check (Liquid Linting)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby
+      - name: Set up Ruby   
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
@@ -86,8 +86,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Install Shopify Theme Kit
-        run:  curl -s https://shopify.dev/themekit.py | python # Example tool for Shopify automation
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest @shopify/theme
       - name: Run Automa Tests
         run: npm run automa:test  # Custom script for automating Shopify tests (e.g., customer flows, product purchase)
     
