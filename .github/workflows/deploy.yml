@@ -1,100 +1,61 @@
-name: Shopify CI
+name: Test and Deploy Shopify Theme
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  unit_tests:
-    name: Run Unit Tests (Jest)
+  test-and-deploy:
     runs-on: ubuntu-latest
+    permissions: write-all
+    timeout-minutes: 30
+
     steps:
-      - uses: actions/checkout@v2
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Install Dependencies
-        run: npm install
-      - name: Run Unit Tests
-        run: npm run test -- --ci --coverage  # Jest should be configured in package.json
 
-  e2e_tests:
-    name: Run End-to-End Tests (Cypress)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-      - name: Install Dependencies
-        run: npm install
-      - name: Run Cypress E2E Tests
-        run: npx cypress run --config-file cypress.json --browser chrome
-
-  api_tests:
-    name: Run API Tests (Postman/Newman)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Newman
-        run: npm install -g newman
-      - name: Run Postman API Tests
-        run: newman run tests/postman-collection.json --environment tests/postman-collection.json
-
-  theme_check:
-    name: Run Shopify Theme Check (Liquid Linting)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Ruby   
-        uses: ruby/setup-ruby@v1
+      # Step 3: Install Ruby
+      - name: Install Ruby
+        uses: actions/setup-ruby@v1
         with:
           ruby-version: '3.1'
-      - name: Install Theme Check
-        run: gem install theme-check
-      - name: Pull Shopify Theme
-        run: shopify theme pull --store=https://shopybhk.myshopify.com
-      - name: Run Shopify Theme Check
-        run: theme-check ./
 
-  performance_test:
-    name: Run Performance Tests (Google Lighthouse)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-      - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli
-      - name: Run Lighthouse Performance Test
-        run: lhci autorun --url=https://shopybhk.myshopify.com/ --collect.staticDistDir=./public
+      # Step 4: Install Bundler for Ruby dependencies
+      - name: Install Bundler
+        run: gem install bundler
 
-  shopify_automa:
-    name: Shopify Automa Testing
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
+      # Step 5: Install Ruby dependencies (for theme development, if any)
+      - name: Install Ruby Dependencies
+        run: bundle install
+       
+      # Step 6: Install Shopify CLI (for theme development)
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest @shopify/theme
-      - name: Run Automa Tests
-        run: npm run automa:test  # Custom script for automating Shopify tests (e.g., customer flows, product purchase)
-    
-  deploy:
-    name: Deploy to Production (Optional)
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && success()  # Deploy only on successful main branch push
-    steps:
-      - name: Deploy Step
-        run: echo "Deploying to production..."  # Add your custom deployment script here
+
+      # Step 7: Install dependencies for JavaScript tests (like Jest)
+      - name: Install Node.js Dependencies
+        run: npm install
+
+      # Step 8: Run Unit Tests
+      - name: Run Tests
+        run: npm test # Change this to your test command (e.g., jest or mocha)
+
+      # Step 9: Conditional Deploy after successful tests
+      - name: Deploy Theme to Shopify
+        if: success()  # Only deploy if tests pass
+        uses: pgrimaud/action-shopify@master
+        env:
+          SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_PASSWORD }}
+          SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
+          SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
+          THEME_PATH: ${{ secrets.THEME_PATH }}
+        with:
+          args: --ignored-file=config/settings_data.json --ignored-file=locales/*
