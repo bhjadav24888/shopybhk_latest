@@ -1,4 +1,4 @@
-name: Test and Deploy  Theme Shopify    
+name: Test and Deploy Shopify Theme
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
   test-and-deploy:
     runs-on: ubuntu-latest
     permissions: write-all
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       # Step 1: Checkout code
@@ -35,22 +35,37 @@ jobs:
       # Step 5: Install Ruby dependencies (for theme development, if any)
       - name: Install Ruby Dependencies
         run: bundle install
-       
+
       # Step 6: Install Shopify CLI (for theme development)
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest @shopify/theme
 
-      # Step 7: Install dependencies for JavaScript tests (like Jest)
+      # Step 7: Install Node.js Dependencies
       - name: Install Node.js Dependencies
         run: npm install
 
-      # Step 8: Run Unit Tests
-      - name: Run Tests
-        run: npm test # Change this to your test command (e.g., jest or mocha)
+      # Step 8: Run Unit Tests (Jest)
+      - name: Run Unit Tests
+        run: npm run test -- --coverage # Adjust this command based on your setup
 
-      # Step 9: Conditional Deploy after successful tests
-      - name: Deploy Theme to Shopify
-        if: success()  # Only deploy if tests pass
+      # Step 9: Run End-to-End Tests (Cypress)
+      - name: Run E2E Tests
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+
+      # Step 10: Run API Tests (Newman for Postman collections)
+      - name: Run API Tests with Newman
+        run: newman run path/to/your/postman_collection.json
+
+      # Step 11: Run Performance Tests (Lighthouse)
+      - name: Run Performance Tests
+        run: lhci autorun
+
+      # Step 12: Conditional Deploy (only after successful tests)
+      - name: Deploy Shopify Theme
+        if: success() # Deploy only if all tests pass
         uses: pgrimaud/action-shopify@master
         env:
           SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_PASSWORD }}
