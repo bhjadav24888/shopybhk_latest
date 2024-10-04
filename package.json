@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "scripts": {
     "test": "jest --passWithNoTests",
+	"test:cypress": "cypress run",
     "automa:test": "shopify themekit test"
   },
   "dependencies": {
