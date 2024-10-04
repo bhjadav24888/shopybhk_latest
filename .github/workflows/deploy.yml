@@ -1,4 +1,4 @@
-name: Test and Deploy Theme Shopify 
+name: Test and Deploy Shopify Theme
 
 on:
   push:
