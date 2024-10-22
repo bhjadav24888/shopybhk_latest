@@ -1,4 +1,4 @@
-name: automatd testing code
+name: automatd testing updated code
 on:
   push:
     branches:
