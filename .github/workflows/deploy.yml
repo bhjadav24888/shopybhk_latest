@@ -1,4 +1,4 @@
-name: Automated Testing and Deployment code updated
+name: Automated Testing and Deployment code
 on:
   push:
     branches:
