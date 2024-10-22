@@ -44,6 +44,15 @@ jobs:
         run: npm install
 
       # Step 8: Run End-to-End Tests (Cypress)
+      - name: Install Cypress
+        run: npx cypress install  # Explicit installation step
+
+      - name: Install XVFB for headless mode
+        run: sudo apt-get install -y xvfb
+
+      - name: Start Xvfb
+        run: Xvfb :99 -screen 0 1024x768x24 &
+
       - name: Run Cypress tests
         run: |
           npx cypress run --browser chrome --headless --spec "cypress/e2e/userFlow.cy.js" -- --disable-gpu --no-sandbox
