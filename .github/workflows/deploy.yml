@@ -1,5 +1,4 @@
-name: Test and Deploy Shopify Theme
-
+name: automatd testing code
 on:
   push:
     branches:
