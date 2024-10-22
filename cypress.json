@@ -1,7 +1,0 @@
-{
-  "baseUrl": "https://shopybhk.myshopify.com/",
-  "integrationFolder": "cypress/e2e",
-  "testFiles": "**/*.spec.js"
-  "video": false
-}
-
