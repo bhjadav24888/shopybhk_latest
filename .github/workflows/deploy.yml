@@ -43,10 +43,10 @@ jobs:
       - name: Install Node.js Dependencies
         run: npm install
 
-       # Step 8: Run End-to-End Tests (Cypress)
+      # Step 8: Run End-to-End Tests (Cypress)
       - name: Run Cypress tests
         run: |
-          npx cypress run --spec "cypress/e2e/userFlow.cy.js" --headless --no-sandbox --disable-gpu
+          npx cypress run --browser chrome --headless --spec "cypress/e2e/userFlow.cy.js" -- --disable-gpu --no-sandbox
         env:
           DISPLAY: ':99.0'
 
