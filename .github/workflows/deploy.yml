@@ -1,51 +1,43 @@
-name: automatd testing code updated 
+name: Automated Testing and Deployment
 on:
   push:
     branches:
       - main
 
 jobs:
-  automatd-testing:
+  automated-testing:
     runs-on: ubuntu-latest
     permissions: write-all
     timeout-minutes: 60
 
     steps:
-      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20'
 
-      # Step 3: Install Ruby
       - name: Install Ruby
         uses: actions/setup-ruby@v1
         with:
           ruby-version: '3.1'
 
-      # Step 4: Install Bundler for Ruby dependencies
       - name: Install Bundler
         run: gem install bundler
 
-      # Step 5: Install Ruby dependencies (for theme development, if any)
       - name: Install Ruby Dependencies
         run: bundle install
 
-      # Step 6: Install Shopify CLI (for theme development)
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest @shopify/theme
 
-      # Step 7: Install Node.js Dependencies
       - name: Install Node.js Dependencies
         run: npm install
 
-      # Step 8: Run End-to-End Tests (Cypress)
       - name: Install Cypress
-        run: npx cypress install  # Explicit installation step
+        run: npm install cypress@latest  # Update to the latest version
 
       - name: Install XVFB for headless mode
         run: sudo apt-get install -y xvfb
@@ -53,15 +45,17 @@ jobs:
       - name: Start Xvfb
         run: Xvfb :99 -screen 0 1024x768x24 &
 
+      - name: List files (for debugging)
+        run: ls -R cypress/e2e/
+
       - name: Run Cypress tests
         run: |
           npx cypress run --browser chrome --headless --spec "cypress/e2e/userFlow.spec.js" -- --disable-gpu --no-sandbox
         env:
           DISPLAY: ':99.0'
 
-      # Step 9: Conditional Deploy (only after successful tests)
       - name: Deploy Shopify Theme
-        if: success() # Deploy only if all tests pass
+        if: success() 
         uses: pgrimaud/action-shopify@master
         env:
           SHOPIFY_PASSWORD: ${{ secrets.SHOPIFY_PASSWORD }}
