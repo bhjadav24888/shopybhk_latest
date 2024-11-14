@@ -1,4 +1,4 @@
-name: Automated Testing user fLow
+name: Automated Testing user flow
 on:
   workflow_dispatch:
 
@@ -48,6 +48,6 @@ jobs:
 
       - name: Run Cypress tests
         run: |
-          npx cypress open
+          npx cypress run --browser chrome --headless --spec "cypress/e2e/userFlow.cy.js" -- --disable-gpu --no-sandbox
         env:
           DISPLAY: ':99.0'
