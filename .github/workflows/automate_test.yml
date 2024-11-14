@@ -1,4 +1,4 @@
-name: Automated testing user flow
+name: Automated testing
 on:
   workflow_dispatch:
 
