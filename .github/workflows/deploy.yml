@@ -1,8 +1,5 @@
 name: Automated Testing and Deployment code
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
