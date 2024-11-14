@@ -47,9 +47,12 @@ jobs:
         run: ls -R cypress/e2e/automated
 
       - name: Run Cypress tests
-      - uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v6
         with:
           spec: "cypress/e2e/automated/*.cy.js"
           build: npm run build       # Builds your application if necessary before starting the server
           start: npm start           # Starts your application server before running Cypress tests
           browser: chrome            # Runs Cypress tests in the Chrome browser
+        env:
+          DISPLAY: ':99.0'
+          
