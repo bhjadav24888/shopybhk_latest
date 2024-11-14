@@ -1,5 +1,5 @@
 describe('Shopify Full User Flow', () => {
-  it('searches for a product, adds it to the cart, and proceeds to checkout', () => {
+  it('Shopify Full User Flow', () => {
     
 	// Visit the homepage
     cy.visit('https://shopybhk.myshopify.com/');
