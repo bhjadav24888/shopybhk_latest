@@ -47,12 +47,7 @@ jobs:
         run: ls -R cypress/e2e/automated
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          spec: "cypress/e2e/automated/*.cy.js"  # Runs all tests in the specified folder
-          record: true                           # Enables Cypress dashboard recording if configured
-          parallel: true                         # Runs tests in parallel if you have multiple CI instances
-          group: 'UI-Chrome'                     # Assigns a group name for dashboard organization
-          start: npm start                       # Starts the application if needed before testing
+        run: |
+          npx cypress run --spec "cypress/e2e/automated/*.cy.js"
         env:
-          DISPLAY: ':99.0'                       # Sets up display for running in headless mode with Xvfb
+          DISPLAY: ':99.0'
