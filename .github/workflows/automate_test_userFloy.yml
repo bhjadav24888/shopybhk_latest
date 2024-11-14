@@ -44,10 +44,10 @@ jobs:
         run: Xvfb :99 -screen 0 1024x768x24 &
 
       - name: List files (for debugging)
-        run: ls -R cypress/e2e/
+        run: ls -R cypress/e2e/automated
 
       - name: Run Cypress tests
         run: |
-          npx cypress run --browser chrome --headless --spec "cypress/e2e/userFlow.cy.js" -- --disable-gpu --no-sandbox
+          npx cypress run --spec "cypress/e2e/automated/*.cy.js"
         env:
           DISPLAY: ':99.0'
