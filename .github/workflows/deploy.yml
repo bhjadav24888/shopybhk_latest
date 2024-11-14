@@ -1,4 +1,4 @@
-name: Automated Testing and Deployment code
+name: Deployment shopify theme code
 on:
   workflow_dispatch:
 
