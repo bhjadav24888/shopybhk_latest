@@ -44,7 +44,7 @@ jobs:
         run: Xvfb :99 -screen 0 1024x768x24 &
 
       - name: List files (for debugging)
-        run: ls -R cypress/e2e/automated
+        run: ls -R automated_testing/cypress/e2e/automated
 
       - name: Run Cypress tests
         run: |
