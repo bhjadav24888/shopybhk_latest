@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Cypress tests
         run: |
-          npx cypress run --spec "cypress/e2e/automated/*.cy.js"
+          npx cypress run --spec "automated_testing/cypress/e2e/automated/*.cy.js"
         env:
           DISPLAY: ':99.0'
           
